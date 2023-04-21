@@ -4,7 +4,7 @@ import _ from 'lodash';
 import {scale, center_left, center_right, title, unitType, unitNamesPath, geoUrl} from './Config';
 
 //const unitNamesJson = import('./data/provinceNames.json');
-import unitNamesJson from './data/countyNames.json';
+import unitNamesJson from './data/englandCountyNames.json';
 const allUnits = unitNamesJson;
 
 function Map() {
@@ -80,7 +80,7 @@ function Map() {
 
         <div style={{width: '40%', marginRight: 10}}>
           <TextBox quiz={quiz} quizIndex={quizIndex} message={message}/>
-          <button style={{margin: 10}} onClick={restartQuiz}>Restart</button>
+          <button className="btn btn-success" style={{margin: 10}} onClick={restartQuiz}>Restart</button>
         </div>
 
         <div className="card" style={{ width: '100%', marginLeft: 10, marginTop: 40}}>
