@@ -53,13 +53,6 @@ function Map() {
     }
   }
 
-  const unitsPropertiesMap = {};
-
-  _.forEach(quiz, unit => {
-    unitsPropertiesMap[unit.unitName] = {
-    }
-  });
-
   useEffect(() => {
     if (done.length === (Object.keys(unitNamesJson)).length) {
     setMessage('Congratulations on completing the quiz');
