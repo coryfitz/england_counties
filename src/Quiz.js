@@ -16,7 +16,6 @@ function Map() {
 
   const handleUnitClick = (unitGeo) => {
 
-    // if quiz is over don't do anything:
     if (quizEnded) return;
 
     const unitName = unitGeo?.properties?.[unitType];
@@ -102,7 +101,6 @@ function Map() {
 
       </div>
 
-
     </div>
   )
 }
@@ -115,7 +113,7 @@ function getNewShuffledQuiz() {
   );
 }
 
-function TextBox ({quiz, quizIndex, restartQuiz, message}) {
+function TextBox ({quiz, quizIndex, message}) {
 
   let nameToGuess = null;
 
@@ -177,7 +175,7 @@ function Unit({geography, currQuizUnit, handleUnitClick, done, unitType}) {
 function Quiz() {
     return (
         <div>
-        <Map />
+          <Map />
         </div>
     )
 }

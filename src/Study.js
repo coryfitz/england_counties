@@ -31,6 +31,7 @@ function Map() {
   
   return (
     <div className="container">
+      
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <a className="navbar-brand justify-content-end" href="/" style={{color: 'black', marginLeft: 15}}><h2>{title}</h2></a>
         <a type="button" className="btn btn-success" href="study" style={{margin: 5}}>Study</a>
@@ -39,38 +40,37 @@ function Map() {
 
       <div style={{display: 'flex'}}>
 
-      <div style={{width: '40%', marginRight: 10}}>
+        <div style={{width: '40%', marginRight: 10}}>
+          <TextBox selectedUnit={selectedUnit} message={message}/>
+          <button className="btn btn-success" style={{margin: 10}} onClick={restartQuiz}>Restart</button>
+        </div>
 
-      <TextBox selectedUnit={selectedUnit} message={message}/>
-      <button className="btn btn-success" style={{margin: 10}} onClick={restartQuiz}>Restart</button>
-      </div>
+        <div className="card" style={{ width: '100%', marginLeft: 10, marginTop: 40}}>
+            <div className="card-body">
+              <ComposableMap
+                projectionConfig={{
+                  scale: scale,
+                  center: [center_left, center_right]
+                }}>
+                <Geographies geography={geoUrl}>
+                  {({ geographies }) => 
+                  geographies.map(geo => (
+                    <Unit 
+                      key={geo?.rsmKey} 
+                      geography={geo}
+                      handleUnitClick={handleUnitClick}
+                      done={done}
+                      unitType={unitType}
+                    />
+                  ))}
+                </Geographies>
+              </ComposableMap>
+            </div>
+        </div>
 
-      <div className="card" style={{ width: '100%', marginLeft: 10, marginTop: 40}}>
-          <div className="card-body">
-        <ComposableMap
-          projectionConfig={{
-            scale: scale,
-            center: [center_left, center_right]
-          }}>
-          <Geographies geography={geoUrl}>
-            {({ geographies }) => 
-            geographies.map(geo => (
-              <Unit 
-                key={geo?.rsmKey} 
-                geography={geo}
-                handleUnitClick={handleUnitClick}
-                done={done}
-                unitType={unitType}
-              />
-            ))}
-          </Geographies>
-        </ComposableMap>
-      </div>
-
-      </div>
       </div>
       
-      </div>
+    </div>
   )
 }
 
@@ -126,7 +126,7 @@ function Unit({geography, handleUnitClick, done, unitType}) {
 function Study() {
     return (
         <div>
-        <Map />
+          <Map />
         </div>
     )
 }
