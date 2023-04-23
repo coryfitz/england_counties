@@ -117,11 +117,11 @@ function TextBox ({quiz, quizIndex, message}) {
 
   let nameToGuess = null;
 
-  try {
-    nameToGuess = quiz[quizIndex].unitName;
-  }
-  catch(err) {
+  if (quizIndex === quiz.length) {
     nameToGuess = null;
+  }
+  else {
+    nameToGuess = quiz[quizIndex].unitName;
   }
 
   return (
