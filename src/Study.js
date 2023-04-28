@@ -44,7 +44,7 @@ function Map() {
           <button className="btn btn-success" style={{margin: 10}} onClick={restartQuiz}>Restart</button>
         </div>
         <div class="col-md-8">
-          <div className="card"style={{ marginTop: 40}}>
+          <div className="card" style={{ marginTop: 40}}>
               <div className="card-body">
                 <ComposableMap
                   projectionConfig={{
