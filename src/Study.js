@@ -38,38 +38,37 @@ function Map() {
         <a type="button" className="btn btn-success" href="quiz" style={{margin: 5}}>Quiz</a>
       </nav>
 
-      <div style={{display: 'flex'}}>
-
-        <div style={{width: '40%', marginRight: 10}}>
+      <div class="row">
+        <div class="col-md-4">
           <TextBox selectedUnit={selectedUnit} message={message}/>
           <button className="btn btn-success" style={{margin: 10}} onClick={restartQuiz}>Restart</button>
         </div>
-
-        <div className="card" style={{ width: '100%', marginLeft: 10, marginTop: 40}}>
-            <div className="card-body">
-              <ComposableMap
-                projectionConfig={{
-                  scale: scale,
-                  center: [center_left, center_right]
-                }}>
-                <Geographies geography={geoUrl}>
-                  {({ geographies }) => 
-                  geographies.map(geo => (
-                    <Unit 
-                      key={geo?.rsmKey} 
-                      geography={geo}
-                      handleUnitClick={handleUnitClick}
-                      done={done}
-                      unitType={unitType}
-                    />
-                  ))}
-                </Geographies>
-              </ComposableMap>
-            </div>
+        <div class="col-md-8">
+          <div className="card"style={{ marginTop: 40}}>
+              <div className="card-body">
+                <ComposableMap
+                  projectionConfig={{
+                    scale: scale,
+                    center: [center_left, center_right]
+                  }}>
+                  <Geographies geography={geoUrl}>
+                    {({ geographies }) => 
+                    geographies.map(geo => (
+                      <Unit 
+                        key={geo?.rsmKey} 
+                        geography={geo}
+                        handleUnitClick={handleUnitClick}
+                        done={done}
+                        unitType={unitType}
+                      />
+                    ))}
+                  </Geographies>
+                </ComposableMap>
+              </div>
+          </div>
         </div>
-
       </div>
-      
+
     </div>
   )
 }
