@@ -3,7 +3,7 @@ import {title} from './Config';
 
 function Home() {
     return (
-        <div>
+        <div className="container">
 
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
                 <a className="navbar-brand justify-content-end" href="/" style={{color: 'black', marginLeft: 15}}><h2>{title}</h2></a>
