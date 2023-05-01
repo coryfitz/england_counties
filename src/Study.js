@@ -6,7 +6,7 @@ const allUnits = unitNamesJson;
 
 function Map() {
   const [selectedUnit, setSelectedUnit] = useState(null);
-  const [message, setMessage] = useState(`Please select any ${unitType} to reveal its name`);
+  const message = useState(`Please select any ${unitType} to reveal its name`);
 
   const handleUnitClick = (unitGeo) => {
     const unitName = unitGeo?.properties?.[unitType];
