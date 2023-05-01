@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 import {scale, center_left, center_right, title, unitType, geoUrl} from './Config';
 import unitNamesJson from './data/englandCountyNames.json'
