@@ -5,29 +5,18 @@ import unitNamesJson from './data/englandCountyNames.json'
 const allUnits = unitNamesJson;
 
 function Map() {
-  const [done, setDone] = useState([]);
   const [selectedUnit, setSelectedUnit] = useState(null);
   const [message, setMessage] = useState(`Please select any ${unitType} to reveal its name`);
 
   const handleUnitClick = (unitGeo) => {
     const unitName = unitGeo?.properties?.[unitType];
     setSelectedUnit(unitName);
-    if (done.includes(unitName) === false) {
-        setDone(done => [...done, unitName]);
-      };
-}
-
-  function restartQuiz() {
-    setSelectedUnit(null);
-    setMessage(`Please select any ${unitType} to reveal its name`);
-    setDone([]);
   }
 
-    useEffect(() => {
-      if (done.length === (Object.keys(unitNamesJson)).length) {
-      setMessage(`Congratulations on studying each ${unitType}`);
-    }
-    }, [done])
+  function handleMouseLeave() {
+    setSelectedUnit(null);
+  }
+
   
   return (
     <div className="container">
@@ -43,7 +32,6 @@ function Map() {
       <div class="row">
         <div class="col-md-4">
           <TextBox selectedUnit={selectedUnit} message={message}/>
-          <button className="btn btn-success" style={{margin: 10}} onClick={restartQuiz}>Restart</button>
         </div>
         <div class="col-md-8">
           <div className="card" style={{ marginTop: 40}}>
@@ -60,7 +48,7 @@ function Map() {
                         key={geo?.rsmKey} 
                         geography={geo}
                         handleUnitClick={handleUnitClick}
-                        done={done}
+                        handleMouseLeave={handleMouseLeave}
                         unitType={unitType}
                       />
                     ))}
@@ -93,22 +81,17 @@ function TextBox ({selectedUnit, message}) {
   )
 }
 
-function Unit({geography, handleUnitClick, done, unitType}) {
+function Unit({geography, handleUnitClick, handleMouseLeave, unitType}) {
   const unitName = geography?.properties?.[unitType]
   const currUnit = allUnits[unitName];
   if (!currUnit) { return (<></>); }
-  let unitDone = false;
-
-  if (done.includes(unitName)) {
-    unitDone= true;
-  };
 
   return (
     <Geography 
     geography={geography}
     style={{
       default: {
-        fill: unitDone ? 'green' : 'grey',
+        fill: 'grey',
         outline: 'none',
       },
       hover: {
@@ -119,7 +102,8 @@ function Unit({geography, handleUnitClick, done, unitType}) {
         outline: 'none',
     }
     }}
-    onClick={() => handleUnitClick(geography)}
+    onMouseEnter={() => handleUnitClick(geography)}
+    onMouseLeave={() => handleMouseLeave(geography)}
     />
     )
 }
