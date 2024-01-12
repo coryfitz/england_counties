@@ -1,9 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Routes, Route} from 'react-router-dom';
-import Study from './Study'
-import Quiz from './Quiz'
-import Home from './Home'
+import Study from './Study.tsx'
+import Quiz from './Quiz.tsx'
+import Home from './Home.tsx'
 
 function App () {
   return (

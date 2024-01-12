@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
-import {scale, center_left, center_right, title, unitType, geoUrl} from './Config';
+import {scale, center_left, center_right, title, unitType, geoUrl} from './Config.tsx';
 import unitNamesJson from './data/englandCountyNames.json'
 const allUnits = unitNamesJson;
 
@@ -8,7 +8,7 @@ function Map() {
   const [selectedUnit, setSelectedUnit] = useState(null);
   const message = useState(`Please select any ${unitType} to reveal its name`);
 
-  const handleUnitClick = (unitGeo) => {
+  function handleUnitClick(unitGeo) {
     const unitName = unitGeo?.properties?.[unitType];
     setSelectedUnit(unitName);
   }
