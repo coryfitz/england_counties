@@ -1,28 +1,39 @@
 import React, { useEffect, useState } from "react";
-import { ComposableMap, Geographies, Geography } from "react-simple-maps";
+import { ComposableMap, Geographies, Geography, GeographyProps } from "react-simple-maps";
 import _ from 'lodash';
-import {scale, center_left, center_right, title, unitType, geoUrl} from './Config.tsx';
-import unitNamesJson from './data/englandCountyNames.json';
-const allUnits = unitNamesJson;
+import { scale, center_left, center_right, title, unitType, geoUrl } from './Config.tsx';
+const unitNamesJson = require('./data/englandCountyNames.json');
 
-function getNewShuffledQuiz() {
-  return _.map(_.shuffle(Object.keys(unitNamesJson)), function(unitName) {
-    return {
-      unitName,
-    };
+interface UnitDetails {
+  val: number;
+}
+
+interface UnitNames {
+  [key: string]: UnitDetails;
+}
+
+interface QuizItem {
+  unitName: string;
+}
+
+const allUnits: UnitNames = unitNamesJson;
+
+function getNewShuffledQuiz(): QuizItem[]  {
+  return _.map(_.shuffle(Object.keys(unitNamesJson)), function(unitName: string) {
+    return { unitName };
   });
 }
 
-function TextBox ({quiz, quizIndex, message}) {
+interface TextBoxProps {
+  quiz: QuizItem[];
+  quizIndex: number;
+  message: string;
+}
+function TextBox (props: TextBoxProps) {
 
-  let nameToGuess = null;
+  const {quiz, quizIndex, message} = props
 
-  if (quizIndex === quiz.length) {
-    nameToGuess = null;
-  }
-  else {
-    nameToGuess = quiz[quizIndex].unitName;
-  }
+  const nameToGuess = quizIndex < quiz.length ? quiz[quizIndex].unitName : null;
 
   return (
     <div>
@@ -40,7 +51,24 @@ function TextBox ({quiz, quizIndex, message}) {
   )
 }
 
-function Unit({geography, currQuizUnit, handleUnitClick, done, unitType, quiz, quizIndex, quizEnded, setDone, moveToNextUnit, setQuiz, setQuizIndex, setQuizEnded}) {
+interface UnitProps {
+  geography: GeographyProps["geography"];
+  currQuizUnit: string;
+  handleUnitClick: (unitGeo: GeographyProps["geography"]) => void;
+  done: string[];
+  unitType: string;
+  quiz: QuizItem[];
+  quizIndex: number;
+  quizEnded: boolean;
+  setDone: React.Dispatch<React.SetStateAction<string[]>>;
+  moveToNextUnit: () => void;
+  setQuiz: React.Dispatch<React.SetStateAction<QuizItem[]>>;
+  setQuizIndex: React.Dispatch<React.SetStateAction<number>>;
+  setQuizEnded: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function Unit(props: UnitProps) {
+  const {geography, currQuizUnit, handleUnitClick, done, unitType, quiz, quizIndex, quizEnded, setDone, moveToNextUnit, setQuiz, setQuizIndex, setQuizEnded} = props;
   const unitName = geography?.properties?.[unitType];
   const currUnit = allUnits[unitName];
   if (!currUnit) { return (<></>); }
@@ -67,18 +95,31 @@ function Unit({geography, currQuizUnit, handleUnitClick, done, unitType, quiz, q
           fill: unitName === currQuizUnit ? 'green' : 'red'
         }
       }}
-      onClick={() => handleUnitClick(geography, quiz, quizIndex, quizEnded, setDone, moveToNextUnit,  setQuiz, setQuizIndex, setQuizEnded)}
+      onClick={() => handleUnitClick(geography, quiz, quizIndex, quizEnded, setDone, moveToNextUnit, setQuiz, setQuizIndex, setQuizEnded)}
     />
   )
 }
 
-function handleUnitClick(unitGeo, quiz, quizIndex, quizEnded, setDone, moveToNextUnit,  setQuiz, setQuizIndex, setQuizEnded) {
+function handleUnitClick(
+  unitGeo: GeographyProps["geography"],
+  quiz: QuizItem[],
+  quizIndex: number,
+  quizEnded: boolean,
+  setDone: React.Dispatch<React.SetStateAction<string[]>>,
+  moveToNextUnit: (unitName: string, quiz: QuizItem[], setQuiz: React.Dispatch<React.SetStateAction<QuizItem[]>>, setQuizIndex: React.Dispatch<React.SetStateAction<number>>, quizIndex: number, setQuizEnded: React.Dispatch<React.SetStateAction<boolean>>) => void,
+  setQuiz: React.Dispatch<React.SetStateAction<QuizItem[]>>,
+  setQuizIndex: React.Dispatch<React.SetStateAction<number>>,
+  setQuizEnded: React.Dispatch<React.SetStateAction<boolean>>
+) {
+  
   if (quizEnded) return;
 
   const unitName = unitGeo?.properties?.[unitType];
+
   if (!unitName) return;
 
   if (unitName === quiz[quizIndex].unitName) {
+    console.log('success')
     setDone(function(done) {
       return [...done, unitName];
   });
@@ -86,8 +127,22 @@ function handleUnitClick(unitGeo, quiz, quizIndex, quizEnded, setDone, moveToNex
   }
 }
 
-function renderGeographies(geographies, done, quiz, quizIndex, quizEnded, setDone, moveToNextUnit, setQuiz, setQuizIndex, setQuizEnded) {
-  return geographies.map(function(geo) {
+function RenderGeographies(
+  geographies: Geography[],
+  done: string[],
+  quiz: QuizItem[],
+  quizIndex: number,
+  quizEnded: boolean,
+  setDone: React.Dispatch<React.SetStateAction<string[]>>,
+  moveToNextUnit: () => void,
+  setQuiz: React.Dispatch<React.SetStateAction<QuizItem[]>>,
+  setQuizIndex: React.Dispatch<React.SetStateAction<number>>,
+  setQuizEnded: React.Dispatch<React.SetStateAction<boolean>>,
+  handleUnitClick: (unitGeo: GeographyProps["geography"]) => void,
+): React.ReactNode {
+  return (
+    <>
+      {geographies.map(function(geo) {
     return (
       <Unit 
         key={geo?.rsmKey} 
@@ -104,12 +159,20 @@ function renderGeographies(geographies, done, quiz, quizIndex, quizEnded, setDon
         setQuiz={setQuiz}
         setQuizIndex={setQuizIndex}
         setQuizEnded={setQuizEnded}
-      />
-    );
-  });
-}
+        />
+        );
+      })}
+    </>
+  );
+};
 
-function restartQuiz(setQuiz, setQuizIndex, setQuizEnded, setDone, setMessage) {
+function restartQuiz(
+  setQuiz: React.Dispatch<React.SetStateAction<QuizItem[]>>,
+  setQuizIndex: React.Dispatch<React.SetStateAction<number>>,
+  setQuizEnded: React.Dispatch<React.SetStateAction<boolean>>,
+  setDone: React.Dispatch<React.SetStateAction<string[]>>,
+  setMessage: React.Dispatch<React.SetStateAction<string>>
+  ) {
   setQuiz(getNewShuffledQuiz());
   setQuizIndex(0);
   setQuizEnded(false);
@@ -117,7 +180,14 @@ function restartQuiz(setQuiz, setQuizIndex, setQuizEnded, setDone, setMessage) {
   setMessage('Please select:');
 }
 
-function moveToNextUnit(unitName, quiz, setQuiz, setQuizIndex, quizIndex, setQuizEnded) {
+function moveToNextUnit(
+  unitName: string,
+  quiz: QuizItem[],
+  setQuiz: React.Dispatch<React.SetStateAction<QuizItem[]>>,
+  setQuizIndex: React.Dispatch<React.SetStateAction<number>>,
+  quizIndex: number,
+  setQuizEnded: React.Dispatch<React.SetStateAction<boolean>>
+  ) {
   // update the quiz:
   setQuiz([...quiz.slice(0, quizIndex), {
       unitName,
@@ -134,10 +204,14 @@ function moveToNextUnit(unitName, quiz, setQuiz, setQuizIndex, quizIndex, setQui
   }
 }
 
-function effectFunction(done, setMessage) {
+function effectFunction(done: string[], setMessage: React.Dispatch<React.SetStateAction<string>>) {
   if (done.length === Object.keys(unitNamesJson).length) {
     setMessage('Congratulations on completing the quiz');
   }
+}
+
+function GeographyRenderer({ geographies, done, quiz, quizIndex, quizEnded, setDone, moveToNextUnit, setQuiz, setQuizIndex, setQuizEnded, handleUnitClick }) {
+  return RenderGeographies(geographies, done, quiz, quizIndex, quizEnded, setDone, moveToNextUnit, setQuiz, setQuizIndex, setQuizEnded, handleUnitClick);
 }
 
 function Quiz() {
@@ -146,6 +220,7 @@ function Quiz() {
   const [quizEnded, setQuizEnded] = useState(false);
   const [done, setDone] = useState([]);
   const [message, setMessage] = useState('Please select:');
+  //const geographies = GeographyProps["geography"]
 
   useEffect(() => {effectFunction(done, setMessage)}, [done]);
 
@@ -172,10 +247,22 @@ function Quiz() {
                   center: [center_left, center_right]
                 }}>
                 <Geographies geography={geoUrl}>
-                {function(geographyProps) {
-                  return renderGeographies(geographyProps.geographies, done, quiz, quizIndex, quizEnded, setDone, moveToNextUnit,  setQuiz, setQuizIndex, setQuizEnded);
-                }}
-              </Geographies>
+                {({ geographies }) => (
+                    <GeographyRenderer
+                      geographies={geographies}
+                      done={done}
+                      quiz={quiz}
+                      quizIndex={quizIndex}
+                      quizEnded={quizEnded}
+                      setDone={setDone}
+                      moveToNextUnit={moveToNextUnit}
+                      setQuiz={setQuiz}
+                      setQuizIndex={setQuizIndex}
+                      setQuizEnded={setQuizEnded}
+                      handleUnitClick={handleUnitClick}
+                    />
+                  )}
+                </Geographies>
               </ComposableMap>
             </div>
           </div>
