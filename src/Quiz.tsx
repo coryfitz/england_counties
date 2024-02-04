@@ -5,10 +5,9 @@ import {scale, center_left, center_right, title, unitType, geoUrl} from './Confi
 import { useQuiz, QuizProvider } from './QuizContext';
 
 function TextBox() {
-  const { quiz, quizIndex, message } = useQuiz(); // Use context to access state and functions
-
+  const { quiz, quizIndex, message } = useQuiz();
   let nameToGuess = null;
-  if (quiz && quizIndex < quiz.length) { // Ensure quiz is defined and quizIndex is within bounds
+  if (quiz && quizIndex < quiz.length) {
     nameToGuess = quiz[quizIndex].unitName;
   }
 
@@ -39,16 +38,16 @@ function Unit({ geography }) {
           geography={geography}
           style={{
               default: {
-                  fill: unitDone ? 'green' : 'grey', // Units that have been identified are green
+                  fill: unitDone ? 'green' : 'grey',
                   outline: 'none',
               },
               hover: {
-                  fill: '#3C3B6E', // Highlight color on hover
+                  fill: '#3C3B6E',
                   outline: 'none',
               },
               pressed: {
                   outline: 'none',
-                  fill: isCurrentQuizUnit ? 'green' : 'red', // Correct current unit turns green, incorrect turns red
+                  fill: isCurrentQuizUnit ? 'green' : 'red',
               },
           }}
           onClick={() => handleUnitClick(geography)}
@@ -58,7 +57,7 @@ function Unit({ geography }) {
 
 
 function Map() {
-  const { quiz, quizIndex, message, restartQuiz } = useQuiz(); // Use context to access state and functions
+  const { quiz, quizIndex, message, restartQuiz } = useQuiz();
 
   return (
     <div className="container">
@@ -72,7 +71,7 @@ function Map() {
 
       <div className="row">
         <div className="col-md-4">
-          <TextBox /> {/* TextBox now uses context internally for its props */}
+          <TextBox />
           <button className="btn btn-success" style={{margin: 10}} onClick={restartQuiz}>Restart</button>
         </div>
         <div className="col-md-8">
@@ -89,7 +88,7 @@ function Map() {
                     <Unit 
                       key={geo?.rsmKey} 
                       geography={geo}
-                    /> // Unit now uses context internally for its props
+                    />
                   ))}
                 </Geographies>
               </ComposableMap>
