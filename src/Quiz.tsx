@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 import _ from 'lodash';
 import {scale, center_left, center_right, title, unitType, geoUrl} from './Config.tsx';
-import { useQuiz, QuizProvider } from './QuizContext';
+import { useQuiz, QuizProvider } from './QuizContext.tsx';
 
 function TextBox() {
   const { quiz, quizIndex, message } = useQuiz();
