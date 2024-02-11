@@ -1,7 +1,7 @@
 import React from 'react';
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
-import { scale, center_left, center_right, title, unitType, geoUrl } from './Config.tsx';
-import { useStudy, StudyProvider } from './StudyContext.tsx';
+import { scale, center_left, center_right, title, unitType, geoUrl } from './Config';
+import { useStudy, StudyProvider } from './StudyContext';
 
 function TextBox() {
   const { selectedUnit, message } = useStudy(); // Use context

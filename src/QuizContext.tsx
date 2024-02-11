@@ -1,9 +1,29 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import unitNamesJson from './data/englandCountyNames.json';
 import _ from 'lodash';
-import {unitType} from './Config.tsx';
+import { unitType } from './Config';
 
-const QuizContext = createContext();
+interface QuizContextType {
+    quiz: any[];
+    quizIndex: number;
+    quizEnded: boolean;
+    done: string[];
+    message: string;
+    handleUnitClick: (unitGeo: any) => void;
+    restartQuiz: () => void;
+}
+
+const defaultContextValue: QuizContextType = {
+    quiz: [],
+    quizIndex: 0,
+    quizEnded: false,
+    done: [],
+    message: 'Please select:',
+    handleUnitClick: () => {},
+    restartQuiz: () => {},
+};
+
+const QuizContext = createContext<QuizContextType>(defaultContextValue);
 
 export const useQuiz = () => useContext(QuizContext);
 
@@ -19,7 +39,7 @@ export const QuizProvider = ({ children }) => {
     const [quiz, setQuiz] = useState(getNewShuffledQuiz());
     const [quizIndex, setQuizIndex] = useState(0);
     const [quizEnded, setQuizEnded] = useState(false);
-    const [done, setDone] = useState([]);
+    const [done, setDone] = useState<string[]>([]);
     const [message, setMessage] = useState('Please select:');
 
     useEffect(() => {

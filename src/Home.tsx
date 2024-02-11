@@ -1,5 +1,5 @@
 import React from "react";
-import {title} from './Config.tsx';
+import {title} from './Config';
 
 function Home() {
     return (

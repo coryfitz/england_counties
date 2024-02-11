@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 import _ from 'lodash';
-import {scale, center_left, center_right, title, unitType, geoUrl} from './Config.tsx';
-import { useQuiz, QuizProvider } from './QuizContext.tsx';
+import {scale, center_left, center_right, title, unitType, geoUrl} from './Config';
+import { useQuiz, QuizProvider } from './QuizContext';
 
 function TextBox() {
   const { quiz, quizIndex, message } = useQuiz();
@@ -25,6 +25,7 @@ function TextBox() {
       </div>
     </div>
   );
+
 }
 
 function Unit({ geography }) {
