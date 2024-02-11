@@ -28,7 +28,7 @@ function TextBox() {
 
 }
 
-function Unit({ geography }) {
+function Unit({ geography }: {geography: any}) {
   const { done, handleUnitClick, quiz, quizIndex } = useQuiz();
   const unitName = geography?.properties?.[unitType];
   let unitDone = done.includes(unitName);

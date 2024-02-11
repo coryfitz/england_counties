@@ -23,7 +23,7 @@ function TextBox() {
   );
 }
 
-function Unit({ geography }) {
+function Unit({ geography }: {geography: any}) {
   const { handleUnitClick, handleMouseLeave } = useStudy(); // Use context
 
   return (

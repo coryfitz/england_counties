@@ -35,7 +35,7 @@ function getNewShuffledQuiz() {
     );
 }
 
-export const QuizProvider = ({ children }) => {
+export const QuizProvider = ({ children }: {children: any}) => {
     const [quiz, setQuiz] = useState(getNewShuffledQuiz());
     const [quizIndex, setQuizIndex] = useState(0);
     const [quizEnded, setQuizEnded] = useState(false);
@@ -48,7 +48,7 @@ export const QuizProvider = ({ children }) => {
         }
     }, [done]);
 
-    const handleUnitClick = (unitGeo) => {
+    const handleUnitClick = (unitGeo: any) => {
         if (quizEnded) return;
         const unitName = unitGeo?.properties?.[unitType];
         if (!unitName) return;
@@ -58,7 +58,7 @@ export const QuizProvider = ({ children }) => {
         }
     };
 
-    const moveToNextUnit = (unitName) => {
+    const moveToNextUnit = (unitName: string) => {
         setQuiz([...quiz.slice(0, quizIndex), { unitName }, ...quiz.slice(quizIndex + 1)]);
         const newIndex = quizIndex + 1;
         setQuizIndex(newIndex);
