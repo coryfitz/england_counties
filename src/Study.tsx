@@ -1,6 +1,5 @@
-import React from 'react';
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
-import { scale, center_left, center_right, title, unitType, geoUrl } from './Config';
+import { scale, center_left, center_right, unitType, geoUrl } from './Config';
 import { useStudy, StudyProvider } from './StudyContext';
 import HeadBar from './HeadBar';
 import { Box, Card, CardContent, Typography, Container, Grid } from '@mui/material';

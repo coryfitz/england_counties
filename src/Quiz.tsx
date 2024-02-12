@@ -1,7 +1,5 @@
-import React from "react";
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
-import _ from 'lodash';
-import {scale, center_left, center_right, title, unitType, geoUrl} from './Config';
+import {scale, center_left, center_right, unitType, geoUrl} from './Config';
 import { useQuiz, QuizProvider } from './QuizContext';
 import HeadBar from './HeadBar';
 
@@ -59,7 +57,7 @@ function Unit({ geography }: {geography: any}) {
 
 
 function Map() {
-  const { quiz, quizIndex, message, restartQuiz } = useQuiz();
+  const { restartQuiz } = useQuiz();
 
   return (
     <div className="container">
