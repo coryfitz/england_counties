@@ -3,6 +3,7 @@ import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 import _ from 'lodash';
 import {scale, center_left, center_right, title, unitType, geoUrl} from './Config';
 import { useQuiz, QuizProvider } from './QuizContext';
+import HeadBar from './HeadBar';
 
 function TextBox() {
   const { quiz, quizIndex, message } = useQuiz();
@@ -62,13 +63,7 @@ function Map() {
 
   return (
     <div className="container">
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <a className="navbar-brand justify-content-end" href="/" style={{color: 'black', marginLeft: 15}}><h2>{title}</h2></a>
-        <div>
-          <a type="button" className="btn btn-success" href="study" style={{margin: 5}}>Study</a>
-          <a type="button" className="btn btn-success" href="quiz" style={{margin: 5}}>Quiz</a>
-        </div>
-      </nav>
+      <HeadBar />
 
       <div className="row">
         <div className="col-md-4">

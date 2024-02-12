@@ -1,26 +1,18 @@
-import React from "react";
-import {title} from './Config';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import HeadBar from './HeadBar';
 
 function Home() {
     return (
-        <div className="container">
-
-            <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                <a className="navbar-brand justify-content-end" href="/" style={{color: 'black', marginLeft: 15}}><h2>{title}</h2></a>
-                <div>
-                    <a type="button" className="btn btn-success" href="study" style={{margin: 5}}>Study</a>
-                    <a type="button" className="btn btn-success" href="quiz" style={{margin: 5}}>Quiz</a>
-                </div>
-            </nav>
-       
-            <div className="container" style={{marginTop: 80, textAlign: 'center'}}>
-                <h2>
+        <Container>
+            <HeadBar />
+            <Container style={{ marginTop: 10, textAlign: 'center' }}>
+                <Typography variant="h5">
                     Select study or quiz mode
-                </h2>
-            </div>
-            
-        </div>
-    )
+                </Typography>
+            </Container>
+        </Container>
+    );
 }
 
 export default Home;
