@@ -1,35 +1,45 @@
-import React from "react";
 import { title } from './Config';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import Container from '@mui/material/Container';
-import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
+import NavButton from './NavButton';
+import { AppBar, Box, Container, Link, Toolbar, Typography } from '@mui/material';
 
 function HeadBar() {
+
     return (
         <Container>
             <Box sx={{ marginTop: 2 }}>
                 <AppBar position="static" color="default" elevation={1}>
-                    <Toolbar>
-                        <Link href="/" color="inherit" style={{ flexGrow: 1, textDecoration: 'none' }}>
-                            <Typography variant="h6" style={{ color: 'black', marginLeft: 15 }}>
+                    <Toolbar sx={{
+                        flexDirection: { xs: 'column', md: 'row' },
+                        alignItems: 'center',
+                        justifyContent: { xs: 'center', md: 'space-between' },
+                    }}>
+                        <Link href="/" color="inherit" sx={{
+                            flexGrow: { md: 1 },
+                            textDecoration: 'none',
+                            display: 'flex',
+                            justifyContent: { xs: 'center', md: 'flex-start' },
+                            width: '100%'
+                        }}>
+                            <Typography variant="h6" sx={{ color: 'black', textAlign: { xs: 'center', md: 'left' }, mb: { xs: 2, md: 0 } }}>
                                 {title}
                             </Typography>
                         </Link>
-                        <Button color="inherit" variant="contained" href="study" style={{ margin: 5, backgroundColor: '#4CAF50' }}>
-                            Study
-                        </Button>
-                        <Button color="inherit" variant="contained" href="quiz" style={{ margin: 5, backgroundColor: '#4CAF50' }}>
-                            Quiz
-                        </Button>
+                        <Box sx={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            justifyContent: 'center',
+                            width: { xs: '100%', md: 'auto' }
+                        }}>
+                            <NavButton text='Study' href='study'/>
+                            <NavButton text='Quiz' href='quiz'/>
+                        </Box>
                     </Toolbar>
                 </AppBar>
             </Box>
         </Container>
     );
 }
+
+
 
 export default HeadBar;

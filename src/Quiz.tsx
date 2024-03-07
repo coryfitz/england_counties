@@ -1,7 +1,9 @@
+import React from 'react';
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
-import {scale, center_left, center_right, unitType, geoUrl} from './Config';
+import { scale, center_left, center_right, unitType, geoUrl } from './Config';
 import { useQuiz, QuizProvider } from './QuizContext';
-import HeadBar from './HeadBar';
+import HeadBar from './HeadBar'; // Ensure HeadBar is compatible with Material-UI
+import { Container, Grid, Card, CardContent, Typography, Button } from '@mui/material';
 
 function TextBox() {
   const { quiz, quizIndex, message } = useQuiz();
@@ -11,66 +13,70 @@ function TextBox() {
   }
 
   return (
-    <div>
-      <div className="card" style={{marginTop: 40}}>
-        <div className="card-body">
-          <h2>{message}</h2>
-        </div>
-      </div>
-      <div className="card" style={{marginTop: 10}}>
-        <div className="card-body">
-          <h3>{nameToGuess}</h3>
-        </div>
-      </div>
-    </div>
+    <React.Fragment>
+      <Card sx={{ marginTop: 5 }}>
+        <CardContent>
+          <Typography variant="h5" component="h2">
+            {message}
+          </Typography>
+        </CardContent>
+      </Card>
+      <Card sx={{ marginTop: 2 }}>
+        <CardContent>
+          <Typography variant="h6" component="h3">
+            {nameToGuess}
+          </Typography>
+        </CardContent>
+      </Card>
+    </React.Fragment>
   );
-
 }
 
-function Unit({ geography }: {geography: any}) {
+function Unit({ geography }: any) {
   const { done, handleUnitClick, quiz, quizIndex } = useQuiz();
   const unitName = geography?.properties?.[unitType];
-  let unitDone = done.includes(unitName);
+  const unitDone = done.includes(unitName);
   const isCurrentQuizUnit = quizIndex < quiz.length && unitName === quiz[quizIndex].unitName;
 
   return (
-      <Geography
-          geography={geography}
-          style={{
-              default: {
-                  fill: unitDone ? 'green' : 'grey',
-                  outline: 'none',
-              },
-              hover: {
-                  fill: '#3C3B6E',
-                  outline: 'none',
-              },
-              pressed: {
-                  outline: 'none',
-                  fill: isCurrentQuizUnit ? 'green' : 'red',
-              },
-          }}
-          onClick={() => handleUnitClick(geography)}
-      />
+    <Geography
+      geography={geography}
+      style={{
+        default: {
+          fill: unitDone ? 'green' : 'grey',
+          outline: 'none',
+        },
+        hover: {
+          fill: '#3C3B6E',
+          outline: 'none',
+        },
+        pressed: {
+          outline: 'none',
+          fill: isCurrentQuizUnit ? 'green' : 'red',
+        },
+      }}
+      onClick={() => handleUnitClick(geography)}
+    />
   );
 }
-
 
 function Map() {
   const { restartQuiz } = useQuiz();
 
   return (
-    <div className="container">
+    <Container>
       <HeadBar />
 
-      <div className="row">
-        <div className="col-md-4">
+      <Grid container spacing={3}>
+        <Grid item xs={12} md={4}>
           <TextBox />
-          <button className="btn btn-success" style={{margin: 10}} onClick={restartQuiz}>Restart</button>
-        </div>
-        <div className="col-md-8">
-          <div className="card" style={{marginTop: 40}}>
-            <div className="card-body">
+          <Button variant="contained" color="primary" onClick={restartQuiz} sx={{ marginTop: 2 }}>
+            Restart
+          </Button>
+        </Grid>
+        <Grid item xs={12} md={8}>
+          <Card sx={{ marginTop: 5 }}>
+            <CardContent>
               <ComposableMap
                 projectionConfig={{
                   scale: scale,
@@ -78,28 +84,28 @@ function Map() {
                 }}>
                 <Geographies geography={geoUrl}>
                   {({ geographies }) => 
-                  geographies.map(geo => (
-                    <Unit 
-                      key={geo?.rsmKey} 
-                      geography={geo}
-                    />
-                  ))}
+                    geographies.map(geo => (
+                      <Unit 
+                        key={geo?.rsmKey} 
+                        geography={geo}
+                      />
+                    ))}
                 </Geographies>
               </ComposableMap>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+    </Container>
   );
 }
 
 function Quiz() {
   return (
-      <QuizProvider>
-        <Map />
-      </QuizProvider>
-  )
+    <QuizProvider>
+      <Map />
+    </QuizProvider>
+  );
 }
 
 export default Quiz;
